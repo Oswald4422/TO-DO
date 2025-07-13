@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chainstore - Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Navigation Bar -->
+        <nav class="navbar">
+            <div class="nav-left">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <div class="logo-squares">
+                            <div class="square"></div>
+                            <div class="square"></div>
+                            <div class="square"></div>
+                            <div class="square"></div>
+                        </div>
+                    </div>
+                    <span>Chainstore</span>
+                </div>
+            </div>
+            <div class="nav-center">
+                <ul class="nav-links">
+                    <li><a href="#" class="nav-link active" data-page="home">Home</a></li>
+                    <li><a href="#" class="nav-link">About Us</a></li>
+                    <li><a href="#" class="nav-link">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="nav-right">
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+        </nav>
+
+        <div class="main-content">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <ul class="sidebar-menu">
+                    <li><a href="#" class="sidebar-link active" data-page="dashboard">Dashboard</a></li>
+                    <li><a href="#" class="sidebar-link" data-page="members">Members</a></li>
+                    <li><a href="#" class="sidebar-link" data-page="payments">Payments</a></li>
+                </ul>
+            </aside>
+
+            <!-- Content Area -->
+            <main class="content">
+                <div id="dashboard" class="page active">
+                    <h1>Dashboard</h1>
+                    <div class="dashboard-cards">
+                        <div class="card">
+                            <h3>Total Members</h3>
+                            <p class="card-number" id="totalMembers">0</p>
+                        </div>
+                        <div class="card">
+                            <h3>Total Payments</h3>
+                            <p class="card-number" id="totalPayments">0</p>
+                        </div>
+                        <div class="card">
+                            <h3>Total Amount</h3>
+                            <p class="card-number" id="totalAmount">$0.00</p>
+                        </div>
+                    </div>
+                    <div class="welcome-message">
+                        <h2>Welcome to Chainstore Dashboard</h2>
+                        <p>Manage your members and payments efficiently with our secure platform.</p>
+                    </div>
+                </div>
+
+                <div id="members" class="page">
+                    <div class="page-header">
+                        <h1>Members</h1>
+                        <button class="add-btn" onclick="openAddMemberModal()">Add New Member</button>
+                    </div>
+                    
+                    <div class="search-container">
+                        <input type="text" id="memberSearch" placeholder="Search members..." onkeyup="searchMembers()">
+                    </div>
+                    
+                    <div class="table-container">
+                        <table id="membersTable">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Date of Birth</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="membersTableBody">
+                                <tr class="no-data">
+                                    <td colspan="4">No data</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="payments" class="page">
+                    <div class="page-header">
+                        <h1>Payments</h1>
+                        <button class="add-btn" onclick="openAddPaymentModal()">Add New Payment</button>
+                    </div>
+                    
+                    <div class="table-container">
+                        <table id="paymentsTable">
+                            <thead>
+                                <tr>
+                                    <th>Member Name</th>
+                                    <th>Payment Type</th>
+                                    <th>Payment Mode</th>
+                                    <th>Amount</th>
+                                    <th>Description</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="paymentsTableBody">
+                                <tr class="no-data">
+                                    <td colspan="6">No data</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Add Member Modal -->
+    <div id="addMemberModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeAddMemberModal()">&times;</span>
+            <h2 id="memberModalTitle">Add New Member</h2>
+            <form id="addMemberForm">
+                <div class="form-group">
+                    <label for="memberName">Full Name</label>
+                    <input type="text" id="memberName" required>
+                </div>
+                <div class="form-group">
+                    <label for="memberEmail">Email</label>
+                    <input type="email" id="memberEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="memberDob">Date of Birth</label>
+                    <input type="date" id="memberDob" required>
+                </div>
+                <button type="submit" class="modal-btn primary">Add Member</button>
+                <button type="button" class="modal-btn secondary" onclick="closeAddMemberModal()">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Payment Modal -->
+    <div id="addPaymentModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeAddPaymentModal()">&times;</span>
+            <h2 id="paymentModalTitle">Add New Payment</h2>
+            <form id="addPaymentForm">
+                <div class="form-group">
+                    <label for="paymentMember">Member Name</label>
+                    <select id="paymentMember" required>
+                        <option value="">Select a member</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="paymentType">Payment Type</label>
+                    <select id="paymentType" required>
+                        <option value="">Select payment type</option>
+                        <option value="Momo">Momo</option>
+                        <option value="Cheque">Cheque</option>
+                        <option value="Bank Transfer">Bank Transfer</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="paymentMode">Payment Mode</label>
+                    <input type="text" id="paymentMode" placeholder="e.g., Donations, Membership fee" required>
+                </div>
+                <div class="form-group">
+                    <label for="paymentAmount">Amount</label>
+                    <input type="number" id="paymentAmount" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="paymentDescription">Description</label>
+                    <textarea id="paymentDescription" rows="3" placeholder="Payment description"></textarea>
+                </div>
+                <button type="submit" class="modal-btn primary">Add Payment</button>
+                <button type="button" class="modal-btn secondary" onclick="closeAddPaymentModal()">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
