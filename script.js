@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function logout() {
     currentUser = null;
     localStorage.removeItem('currentUser');
-    window.location.href = 'authentication.html';
+    window.location.href = 'index.html';
 }
 
 // Homepage Functions
